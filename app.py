@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import numpy as np
+import pandas as pd
 
 # Load model
 pipe = pickle.load(open('pipe.pkl', 'rb'))
@@ -18,13 +19,11 @@ st.markdown("""
 
 st.write("")
 
-# Sidebar
 st.sidebar.header("About")
 st.sidebar.info("""
 This app predicts medical insurance cost using a trained Machine Learning model.
 """)
 
-# Input fields
 age = st.number_input("Age", min_value=1, max_value=100, step=1)
 bmi = st.number_input("BMI", min_value=10.0, max_value=60.0, step=0.1)
 children = st.number_input("Number of Children", min_value=0, max_value=10, step=1)
@@ -33,10 +32,16 @@ sex = st.selectbox("Sex", ["male", "female"])
 smoker = st.selectbox("Smoker?", ["yes", "no"])
 region = st.selectbox("Region", ["southwest", "southeast", "northwest", "northeast"])
 
-# Prepare model input
-input_data = np.array([[age, bmi, children, sex, smoker, region]])
+# Correct input format
+input_data = pd.DataFrame({
+    "age": [age],
+    "bmi": [bmi],
+    "children": [children],
+    "sex": [sex],
+    "smoker": [smoker],
+    "region": [region]
+})
 
-# Predict button
 if st.button("Predict Medical Cost 💵"):
     pred = pipe.predict(input_data)[0]
     st.success(f"Predicted Medical Cost: **₹{pred:,.2f}**")
