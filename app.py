@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 st.markdown("""
-    <h1 style='text-align:center; color:#4CAF50;'>💊 Medical Cost Prediction App</h1>
+    <h1 style='text-align:center; color:#4CAF50;'>💊 Medical Cost Prediction </h1>
     <p style='text-align:center;'>Enter patient details below to estimate medical insurance charges.</p>
 """, unsafe_allow_html=True)
 
@@ -21,7 +21,7 @@ st.write("")
 
 st.sidebar.header("About")
 st.sidebar.info("""
-This app predicts medical insurance cost using a trained Machine Learning model.
+This app predicts medical insurance cost using a trained Machine Learning model called as Sgd regressor.
 """)
 
 age = st.number_input("Age", min_value=1, max_value=100, step=1)
