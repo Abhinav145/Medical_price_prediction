@@ -2,9 +2,15 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
-# Load model
-pipe = pickle.load(open('pipe.pkl', 'rb'))
+# ------------ SAFE MODEL LOADING -------------
+# This ensures Streamlit Cloud finds pipe.pkl correctly
+model_path = Path(__file__).parent / "pipe.pkl"
+
+with open(model_path, "rb") as f:
+    pipe = pickle.load(f)
+# ----------------------------------------------
 
 st.set_page_config(
     page_title="Medical Cost Prediction",
@@ -21,7 +27,7 @@ st.write("")
 
 st.sidebar.header("About")
 st.sidebar.info("""
-This app predicts medical insurance cost using a trained Machine Learning model called as Sgd regressor.
+This app predicts medical insurance cost using a trained Machine Learning model called as SGD Regressor.
 """)
 
 age = st.number_input("Age", min_value=1, max_value=100, step=1)
@@ -45,3 +51,4 @@ input_data = pd.DataFrame({
 if st.button("Predict Medical Cost 💵"):
     pred = pipe.predict(input_data)[0]
     st.success(f"Predicted Medical Cost: **₹{pred:,.2f}**")
+
